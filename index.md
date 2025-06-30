@@ -25,6 +25,10 @@ style: |
 
 <h1 style="text-align: center;">Artificial Intelligence</h1>
 
+![center](https://signature.santsg.com/assets/san-bgwhite.jpg)
+
+---
+
 ![center](images/banner.png "AI Presentation Banner")
 
 ---
@@ -43,11 +47,7 @@ style: |
 
 ---
 
-# History of AI
-
-<p align="center">
-  <img src="images/history-of-ai.webp" alt="History of AI" title="AI History" />
-</p>
+![center](images/history-of-ai.webp "AI History")
 
 ---
 
@@ -65,9 +65,7 @@ Systems or machines that can simulate human intelligence.
 
 ## Definitions
 
-<p align="center">
-  <img src="images/ai-diagram.png" alt="AI Diagram" title="AI Diagram" />
-</p>
+![center](images/ai-diagram.png "AI Diagram"){ style="max-width: 70%; height: auto;" }
 
 ---
 
@@ -87,13 +85,66 @@ Systems or machines that can simulate human intelligence.
 - Reinforcement Learning
 - Generative AI
 
+---
+
 ## Supervised Learning
+
+Supervised learning is a type of machine learning where models are trained on labeled data to predict outcomes for new, unseen inputs.
+
+---
+
+![center](images/supervise-learning.png)
+
+---
 
 ## Unsupervised Learning
 
+Unsupervised learning is a machine learning approach where models find patterns or groupings in data without labeled outcomes.
+
+---
+
+![center](images/unsupervised-learning.png)
+
+---
+
 ## Reinforcement Learning
 
-## Generative AI
+Reinforcement learning is a type of machine learning where an agent learns to make decisions by interacting with an environment and receiving rewards or penalties based on its actions.
+
+---
+
+# Generative AI
+
+- Generative AI refers to systems that can create new content—such as text, images, or audio—by learning patterns from existing data.
+- It predicts which token will be next based on previous tokens.
+
+---
+
+## Large Language Models (LLMs)
+
+Large Language Models (LLMs) are advanced AI models trained on vast amounts of text data to understand and generate human-like language.
+
+---
+
+## Agents
+
+Agents are AI systems that can autonomously perceive their environment, reason, and take actions to achieve specific goals, often using chain-of-thought reasoning.
+
+## ![Agent](images/agent.png)
+
+---
+
+## Retrieval Augmental Generation (RAG)
+
+![RAG](images/rag.png)
+
+---
+
+## Model Context Protocol (MCP)
+
+---
+
+# Q&A
 
 ---
 
@@ -102,3 +153,5 @@ Systems or machines that can simulate human intelligence.
 - https://medium.com/@lmpo/a-brief-history-of-ai-with-deep-learning-26f7948bc87b
 
 - https://medium.com/womenintechnology/ai-c3412c5aa0ac
+
+- https://www.youtube.com/watch?v=LPZh9BOjkQs
