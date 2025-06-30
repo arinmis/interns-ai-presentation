@@ -20,17 +20,16 @@ style: |
       margin-right: auto;
   }
 ---
-
 <!-- _class: header -->
+
+<!-- _backgroundColor: '#0E1536' -->
+<!-- _color: white -->
 
 # Artificial Intelligence
 
-Mustafa Arinmis
+![h:100 bg right](images/SanTSG_100.yil-Logo_beyaz.svg)
 
-<p align="center">
-  <img src="https://signature.santsg.com/assets/san-bgwhite.jpg" alt="center" style="height: 80px; margin-right: 30px; vertical-align: middle;">
-  <img src="images/akdeniz-uni.png" alt="center" style="height: 80px; vertical-align: middle;">
-</p>
+
 
 ---
 
@@ -144,11 +143,38 @@ Agents are AI systems that can autonomously perceive their environment, reason, 
 
 ## Retrieval Augmental Generation (RAG)
 
+An AI technique that combines retrieving relevant information from external sources with generating natural language responses to provide more accurate and informed answers.
+
+---
 ![RAG](images/rag.png)
 
 ---
 
-## Model Context Protocol (MCP)
+# **Model Context Protocol (MCP)**
+
+LLMs are stateless—they forget previous interactions unless context is provided each time. **Model Context Protocol (MCP)** is a software protocol or architecture layer designed to address this by:
+
+- Managing context, memory, and state across interactions
+- Coordinating multiple AI components, tools, and agents
+- Facilitating complex, multi-turn interactions with LLMs and agent-based systems
+
+---
+
+MCP enables:
+
+- Multi-turn conversation history
+- Agent planning and decision tracking
+- Long-term memory and goal management
+
+---
+
+| Component               | Role                                                                |
+| ----------------------- | ------------------------------------------------------------------- |
+| 🧠 **Context Manager**  | Stores conversation history, task steps, memory states              |
+| 🧾 **Memory Store**     | Saves structured and unstructured memory (vector DB, key-value)     |
+| 🔧 **Tool Router**      | Routes requests to external tools/functions (APIs, databases, etc.) |
+| 🔄 **LLM Orchestrator** | Manages calls to different LLMs with contextual prompts             |
+| 🧑‍💼 **Agent Manager** | Coordinates AI agents, tracks their goals and subtasks              |
 
 ---
 
