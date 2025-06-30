@@ -26,6 +26,7 @@ style: |
 <h1 style="text-align: center;">Artificial Intelligence</h1>
 
 ![center](https://signature.santsg.com/assets/san-bgwhite.jpg)
+![center](images/akdeniz-uni.png)
 
 ---
 
@@ -110,6 +111,12 @@ Unsupervised learning is a machine learning approach where models find patterns 
 ## Reinforcement Learning
 
 Reinforcement learning is a type of machine learning where an agent learns to make decisions by interacting with an environment and receiving rewards or penalties based on its actions.
+
+---
+
+<div align="center">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/hgjsLmFSkxo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
 
 ---
 
