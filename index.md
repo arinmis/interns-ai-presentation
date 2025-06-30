@@ -23,18 +23,18 @@ style: |
 
 <!-- _class: header -->
 
-<h1 style="text-align: center;">Artificial Intelligence</h1>
+# Artificial Intelligence
 
-![center](https://signature.santsg.com/assets/san-bgwhite.jpg)
-![center](images/akdeniz-uni.png)
+Mustafa Arinmis
+
+<p align="center">
+  <img src="https://signature.santsg.com/assets/san-bgwhite.jpg" alt="center" style="height: 80px; margin-right: 30px; vertical-align: middle;">
+  <img src="images/akdeniz-uni.png" alt="center" style="height: 80px; vertical-align: middle;">
+</p>
 
 ---
 
-![center](images/banner.png "AI Presentation Banner")
-
----
-
-# **Outline**
+# Outline
 
 - History of AI
   - What is AI?
@@ -66,16 +66,15 @@ Systems or machines that can simulate human intelligence.
 
 ## Definitions
 
-![center](images/ai-diagram.png "AI Diagram"){ style="max-width: 70%; height: auto;" }
-
----
-
 - **Artificial Intelligence (AI):** A branch of computer science focused on creating machines that simulate human intelligence.
 - **Machine Learning (ML):** Enables systems to learn from data and improve over time without explicit programming.
 - **Neural Networks (NNs):** Computational models inspired by the human brain, used for pattern recognition and classification.
 - **Deep Learning (DL):** A subset of ML that uses multi-layered neural networks to model complex patterns in data.
 - **Generative AI (GenAI):** AI systems capable of creating new content, such as text, images, or audio.
 - **Large Language Models (LLMs):** Advanced GenAI models specialized in understanding and generating human language.
+---
+
+![center h:600](images/ai-diagram.png)
 
 ---
 
@@ -110,12 +109,16 @@ Unsupervised learning is a machine learning approach where models find patterns 
 
 ## Reinforcement Learning
 
-Reinforcement learning is a type of machine learning where an agent learns to make decisions by interacting with an environment and receiving rewards or penalties based on its actions.
+Reinforcement learning is a type of machine learning where an **agent** learns to make **decisions** by interacting with an **environment** and receiving **rewards** or **penalties** based on its actions.
+
+---
+
+![center h:600](images/reinforcement-learning.png)
 
 ---
 
 <div align="center">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/hgjsLmFSkxo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <iframe width="700" height="400" src="https://www.youtube.com/embed/hgjsLmFSkxo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
 ---
@@ -136,8 +139,6 @@ Large Language Models (LLMs) are advanced AI models trained on vast amounts of t
 ## Agents
 
 Agents are AI systems that can autonomously perceive their environment, reason, and take actions to achieve specific goals, often using chain-of-thought reasoning.
-
-## ![Agent](images/agent.png)
 
 ---
 
