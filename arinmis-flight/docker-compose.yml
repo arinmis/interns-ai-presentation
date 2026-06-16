@@ -1,0 +1,19 @@
+services:
+  web:
+    build: ./web
+    container_name: flight-web
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+
+  mcp:
+    build: ./mcp
+    container_name: flight-mcp
+    ports:
+      - "8765:8765"
+    environment:
+      - API_BASE=http://web:3000
+      - PORT=8765
+    depends_on:
+      - web

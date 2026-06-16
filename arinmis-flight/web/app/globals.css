@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
+:root {
+  /* palette from octopusplus vcard */
+  --brand: #fe2775;       /* primary pink */
+  --accent: #fe2775;
+  --accent-2: #8998ff;    /* periwinkle */
+  --navy: #0c0d10;        /* dark ink (used for headings/text) */
+  --bg: #ffeff5;          /* light pink wash */
+  --rule: #f1d7e1;
+  --muted: #888888;
+  --font: 'Roboto', "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: #0b0b0b;
+}
+.topbar {
+  background: var(--brand);
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar .brand { font-size: 20px; font-weight: 700; letter-spacing: 0.02em; }
+.topbar .nav { display: flex; gap: 18px; }
+.topbar .nav a {
+  color: #cdd4ea;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+}
+.topbar .nav a:hover { color: #fff; }
+.wrap { max-width: 760px; margin: 28px auto; padding: 0 18px; }
+.card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+h1 { font-size: 22px; margin: 0 0 4px; color: var(--navy); }
+h2 { font-size: 17px; margin: 0 0 12px; color: var(--navy); }
+.sub { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
+label { display: block; font-size: 13px; color: var(--muted); margin: 8px 0 4px; }
+input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.row { display: flex; gap: 12px; }
+.row > div { flex: 1; }
+button {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+button:hover { filter: brightness(1.05); }
+button.ghost { background: #eef0f5; color: var(--navy); }
+button:disabled { opacity: 0.5; cursor: default; }
+.actions { margin-top: 14px; display: flex; gap: 10px; }
+.flight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.flight .info { font-size: 14px; }
+.flight .meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.price { font-size: 18px; font-weight: 700; color: var(--navy); margin-right: 10px; }
+.priceRow { display: flex; align-items: center; }
+.error { color: #c0392b; font-size: 14px; margin-top: 8px; }
+.ticket {
+  background: linear-gradient(135deg, var(--brand), var(--accent-2));
+  color: #fff;
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+.ticket .pnr { font-size: 30px; font-weight: 800; letter-spacing: 0.12em; }
+.ticket .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; margin-top: 16px; }
+.ticket .k { font-size: 11px; text-transform: uppercase; color: rgba(255,255,255,0.75); letter-spacing: 0.05em; }
+.ticket .v { font-size: 16px; font-weight: 600; }
+.badge { display: inline-block; background: #16a34a; color: #fff; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.muted-note { color: var(--muted); font-size: 13px; margin-top: 16px; }
+
+/* plane seat map (SVG) */
+.seat-svg-wrap { border: 1px solid var(--rule); border-radius: 12px; padding: 10px; background: #fafbfd; overflow-x: auto; }
+.plane-svg { width: 100%; min-width: 620px; height: auto; display: block; }
+.fuse { fill: #eef1f7; stroke: #c4cad6; stroke-width: 2; }
+.wing { fill: #e2e7f0; stroke: #c4cad6; stroke-width: 2; }
+.cockpit { fill: #0e1536; opacity: 0.8; }
+.planehint { font: 600 12px var(--font); fill: var(--muted); letter-spacing: 0.05em; }
+.pseat { fill: #dbe6fe; stroke: #b7c6e6; stroke-width: 1.5; transition: fill 0.1s ease; }
+.pseat.window { stroke: #16a34a; stroke-width: 2.5; }
+.pseat.taken { fill: #c9cdd6; stroke: #b3b7c0; }
+.pseat.sel { fill: var(--brand); stroke: #0c0d10; stroke-width: 2.5; }
+.pseat.view { fill: #edf0f6; stroke: #dde1ea; stroke-width: 1.5; }
+.seat-on-plane { margin-top: 16px; }
+.seat-on-plane-h { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.seatlabel { font: 700 11px var(--font); fill: #0e1536; pointer-events: none; }
+.seatlabel.light { fill: #fff; }
+.seatlabel.dim { fill: #9aa3b2; }
+
+/* (legacy) vertical seat grid */
+.seatmap { max-height: 330px; overflow-y: auto; border: 1px solid var(--rule); border-radius: 10px; padding: 12px; background: #fafbfd; }
+.seatrow { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
+.rownum { width: 22px; text-align: right; color: var(--muted); font-size: 12px; }
+.seat { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--rule); background: #e8f0fe; color: var(--navy); font-size: 12px; font-weight: 700; padding: 0; cursor: pointer; }
+.seat.window { box-shadow: inset 0 0 0 2px #16a34a; }
+.seat.taken { background: #d6d9e0; color: #9aa3b2; cursor: not-allowed; box-shadow: none; }
+.seat.sel { background: var(--accent); color: #fff; box-shadow: inset 0 0 0 2px #0e1536; }
+.aisle-gap { width: 20px; }
+.seat-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: 13px; color: var(--muted); align-items: center; }
+.seat-legend i.lg { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-right: 5px; }
+.lg.window { background: #e8f0fe; box-shadow: inset 0 0 0 2px #16a34a; }
+.lg.avail { background: #e8f0fe; }
+.lg.taken { background: #d6d9e0; }
+.lg.sel { background: var(--accent); }

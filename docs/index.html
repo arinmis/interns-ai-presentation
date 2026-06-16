@@ -75,6 +75,18 @@
 
   a { color: var(--accent); }
 
+  /* vector arithmetic */
+  .vm-eq { display: flex; gap: .5em; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 2.2rem; margin: .7em 0; }
+  .vm-chip { padding: .15em .55em; border-radius: 10px; font-weight: 600; }
+  .vm-pos { background: #e6f4ea; color: #0E1536; }
+  .vm-neg { background: #fde7dd; color: #c0392b; }
+  .vm-op { color: var(--muted); font-weight: 700; }
+  .vm-res { background: #eef0f5; color: var(--muted); min-width: 2.2em; }
+  .vm-res.solved { background: #16a34a; color: #fff; animation: tdPop .5s ease; }
+  .vm-tr { font-size: 1.2rem; color: var(--muted); margin: .2em 0; }
+  .vm-note { font-size: 1.05rem; color: var(--muted); margin: .45em 0; min-height: 1.4em; }
+  .vm-note b { color: var(--accent); }
+
   /* embedding scatter plot */
   .emb-plot { width: 100%; max-width: 720px; max-height: 42vh; display: block; margin: .4em auto .2em; }
   .emb-plot text { font-family: var(--font); font-size: 15px; font-weight: 600; }
@@ -196,13 +208,21 @@
   .ap-content { flex: 1; color: var(--navy); }
   .ap-sys { background: #eef0f5; } .ap-sys .ap-tag { background: var(--navy); }
   .ap-tools { background: #eef4ff; } .ap-tools .ap-tag { background: #2563eb; }
-  .ap-msg { background: #e6f4ea; } .ap-msg .ap-tag { background: #16a34a; }
-  .ap-box.sending { animation: apFlash .5s ease; }
-  @keyframes apFlash { 50% { transform: scale(1.03); box-shadow: 0 5px 16px rgba(14,21,54,.25); } }
-  .ap-arrow { font-size: .95rem; color: var(--muted); margin: .35em 0; opacity: .4; transition: opacity .2s ease; }
-  .ap-arrow.on { opacity: 1; color: var(--accent); }
-  .ap-llm { display: inline-block; min-width: 180px; padding: .5em 1.3em; border-radius: 14px; background: var(--navy); color: #fff; font-weight: 700; font-size: 1.4rem; box-shadow: 0 4px 14px rgba(14,21,54,.35); }
-  .ap-llm.pulse { animation: tdThink .5s ease 2 alternate; }
+  .ap-keep { position: relative; }
+  .ap-pin { flex: 0 0 auto; font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #16a34a; border: 1px solid #bfe6cb; background: #e6f4ea; padding: .2em .5em; border-radius: 999px; }
+  .ap-keep.persist { animation: apFlash .5s ease; box-shadow: 0 0 0 2px #16a34a inset; }
+  @keyframes apFlash { 50% { transform: scale(1.025); box-shadow: 0 5px 16px rgba(14,21,54,.25); } }
+  .ap-msgs { border: 1px dashed #c8cdd8; border-radius: 10px; padding: .5em .7em; min-height: 4.5em; background: #fff; text-align: left; transition: background .3s ease; }
+  .ap-msgs.cleared { background: #fbecea; }
+  .ap-msgs-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; font-weight: 700; color: var(--muted); margin-bottom: .35em; }
+  .ap-row { display: flex; margin: .25em 0; }
+  .ap-row.user { justify-content: flex-end; }
+  .ap-row.assistant { justify-content: flex-start; }
+  .ap-bubble { display: inline-block; padding: .35em .7em; border-radius: 12px; font-size: 1rem; max-width: 82%; animation: cwIn .3s ease; }
+  .ap-row.user .ap-bubble { background: #2563eb; color: #fff; border-bottom-right-radius: 3px; }
+  .ap-row.assistant .ap-bubble { background: #eef0f5; color: var(--navy); border-bottom-left-radius: 3px; }
+  .ap-controls { display: flex; gap: 1em; justify-content: center; margin-top: .7em; }
+  .ap-clear-btn { background: #c0392b; }
 
   /* transformer + attention two-column slide */
   .tf-row { display: flex; gap: 2.2em; align-items: center; justify-content: center; }
@@ -520,6 +540,25 @@
     </div>
   </section>
 
+  <!-- 11c. Vector arithmetic -->
+  <section class="slide" id="vecmath">
+    <div class="slide-inner" style="text-align:center">
+      <h2>Meaning becomes math</h2>
+      <p class="lead">Because words are vectors, you can add and subtract their meanings.</p>
+      <div class="vm-eq">
+        <span class="vm-chip vm-pos">king</span>
+        <span class="vm-op">&minus;</span>
+        <span class="vm-chip vm-neg">man</span>
+        <span class="vm-op">+</span>
+        <span class="vm-chip vm-pos">woman</span>
+        <span class="vm-op">=</span>
+        <span class="vm-chip vm-res" id="vmRes">?</span>
+      </div>
+      <div class="vm-note" id="vmNote">What word lands here? The vectors decide.</div>
+      <button class="td-btn" id="vmBtn">Reveal the answer &rarr;</button>
+    </div>
+  </section>
+
   <!-- 12. Transformers & Attention -->
   <section class="slide">
     <div class="slide-inner">
@@ -730,16 +769,16 @@
   <section class="slide" id="anatomy">
     <div class="slide-inner" style="text-align:center">
       <h2>What we actually send the model</h2>
-      <p class="lead">Every call is one bundle of context, assembled in order:</p>
+      <p class="lead"><strong>System prompt</strong> and <strong>tools</strong> go on <em>every</em> call. <strong>Messages</strong> reset on a new session.</p>
       <div class="ap-stack">
-        <div class="ap-box ap-sys"><span class="ap-tag">system prompt</span><span class="ap-content">"You are a helpful travel assistant for SanTSG. Be concise and honest."</span></div>
-        <div class="ap-box ap-tools"><span class="ap-tag">tools</span><span class="ap-content">search_flights(from, to, date) &middot; book_flight(flight_id)</span></div>
-        <div class="ap-box ap-msg"><span class="ap-tag">messages</span><span class="ap-content">user: "Bana yarın İzmir'e ucuz bir uçuş bul."</span></div>
+        <div class="ap-box ap-sys ap-keep"><span class="ap-tag">system prompt</span><span class="ap-content">"You are a helpful travel assistant for SanTSG. Be concise and honest."</span><span class="ap-pin">kept</span></div>
+        <div class="ap-box ap-tools ap-keep"><span class="ap-tag">tools</span><span class="ap-content">search_flights(from, to, date) &middot; book_flight(flight_id)</span><span class="ap-pin">kept</span></div>
+        <div class="ap-msgs" id="apMsgs"><div class="ap-msgs-label">messages &middot; this session</div></div>
       </div>
-      <div class="ap-arrow" id="apArrow">&darr; sent to the LLM on every call &darr;</div>
-      <div class="ap-llm">LLM</div>
-      <br>
-      <button class="td-btn" id="apBtn">Assemble &amp; send &rarr;</button>
+      <div class="ap-controls">
+        <button class="td-btn" id="apSend">Send a message &rarr;</button>
+        <button class="td-btn ap-clear-btn" id="apClear">Clear (new session)</button>
+      </div>
     </div>
   </section>
 
@@ -799,11 +838,11 @@
   <section class="slide">
     <div class="slide-inner">
       <h2>Demo: Booking a Flight with MCP</h2>
-      <p>We connect <strong>Claude Code</strong> to an <strong>Octopus price-search MCP server</strong>.</p>
+      <p>We connect <strong>Claude Code</strong> to our <strong>flight-booking MCP server</strong>.</p>
       <ul>
-        <li>The MCP server exposes flight <strong>price search</strong> and <strong>booking</strong> as tools</li>
+        <li>The MCP server exposes <strong>search_flights</strong>, <strong>get_offer</strong>, <strong>book_flight</strong>, <strong>get_ticket</strong> as tools</li>
         <li>Claude Code connects to it as an MCP <strong>client</strong></li>
-        <li>We ask in plain language &rarr; the agent searches prices and books a flight</li>
+        <li>We ask in plain language &rarr; the agent searches, offers, and books a flight</li>
       </ul>
     </div>
   </section>
@@ -1337,24 +1376,73 @@
 
 // ---- Anatomy of a request ----
 (function () {
-  var btn = document.getElementById('apBtn');
-  if (!btn) return;
-  var boxes = document.querySelectorAll('#anatomy .ap-box');
-  var arrow = document.getElementById('apArrow');
-  var llm = document.querySelector('#anatomy .ap-llm');
+  var msgs = document.getElementById('apMsgs');
+  if (!msgs) return;
+  var sendBtn = document.getElementById('apSend');
+  var clearBtn = document.getElementById('apClear');
+  var keeps = document.querySelectorAll('#anatomy .ap-keep');
 
+  var SCRIPT = [
+    { role: 'user', text: 'Bana yarın İzmir\'e ucuz bir uçuş bul.' },
+    { role: 'assistant', text: 'En ucuz uçuş 1.250 TL. Onaylıyor musunuz?' },
+    { role: 'user', text: 'Evet, onayla.' },
+    { role: 'assistant', text: 'Uçuş rezerve edildi. İyi yolculuklar!' }
+  ];
+  var idx = 0;
+
+  function addNext() {
+    if (idx >= SCRIPT.length) return;
+    msgs.classList.remove('cleared');
+    var m = SCRIPT[idx++];
+    var row = document.createElement('div');
+    row.className = 'ap-row ' + m.role;
+    row.innerHTML = '<span class="ap-bubble">' + m.text + '</span>';
+    msgs.appendChild(row);
+    if (idx >= SCRIPT.length) sendBtn.innerHTML = 'Conversation done';
+    sendBtn.disabled = idx >= SCRIPT.length;
+  }
+
+  function clearSession() {
+    // remove every message, keep system prompt + tools
+    msgs.querySelectorAll('.ap-row').forEach(function (r) { r.remove(); });
+    msgs.classList.add('cleared');
+    idx = 0;
+    sendBtn.innerHTML = 'Send a message &rarr;';
+    sendBtn.disabled = false;
+    // flash system prompt + tools to show they persist
+    keeps.forEach(function (k) {
+      k.classList.remove('persist');
+      void k.offsetWidth;
+      k.classList.add('persist');
+      setTimeout(function () { k.classList.remove('persist'); }, 600);
+    });
+    setTimeout(function () { msgs.classList.remove('cleared'); }, 900);
+  }
+
+  sendBtn.addEventListener('click', addNext);
+  clearBtn.addEventListener('click', clearSession);
+})();
+
+// ---- Vector arithmetic ----
+(function () {
+  var btn = document.getElementById('vmBtn');
+  if (!btn) return;
+  var res = document.getElementById('vmRes');
+  var note = document.getElementById('vmNote');
+  var solved = false;
   btn.addEventListener('click', function () {
-    btn.disabled = true;
-    arrow.classList.remove('on');
-    llm.classList.remove('pulse');
-    boxes.forEach(function (b) { b.classList.remove('sending'); });
-    boxes.forEach(function (b, i) { setTimeout(function () { b.classList.add('sending'); }, i * 450); });
-    setTimeout(function () { arrow.classList.add('on'); }, boxes.length * 450);
-    setTimeout(function () {
-      llm.classList.add('pulse');
-      btn.innerHTML = 'Send again &#8635;';
-      btn.disabled = false;
-    }, boxes.length * 450 + 300);
+    if (!solved) {
+      res.textContent = 'queen';
+      res.classList.add('solved');
+      note.innerHTML = 'The vectors line up: <b>king - man + woman</b> lands right next to <b>queen</b>.';
+      btn.innerHTML = 'Reset &#8635;';
+    } else {
+      res.textContent = '?';
+      res.classList.remove('solved');
+      note.innerHTML = 'Nobody taught the model this rule; it falls out of the geometry.';
+      btn.innerHTML = 'Reveal the answer &rarr;';
+    }
+    solved = !solved;
   });
 })();
 </script>
