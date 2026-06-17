@@ -64,8 +64,8 @@
   .lead { text-align: center; font-size: 1.7rem; }
 
   /* images */
-  .slide img.full { max-width: 100%; max-height: 78vh; display: block; margin: 0 auto; }
-  .slide img.tall { max-height: 70vh; display: block; margin: 0 auto; }
+  .slide img.full { max-width: 100%; max-height: 88vh; display: block; margin: 0 auto; }
+  .slide img.tall { max-height: 86vh; display: block; margin: 0 auto; }
 
   /* tables */
   table { border-collapse: collapse; margin: 1em auto; width: 100%; font-size: 1.1rem; }
@@ -264,6 +264,7 @@
   .nav-btn:disabled { opacity: .3; cursor: default; transform: none; }
   #prev { right: 86px; }
   #next { right: 28px; }
+  #fs { right: 144px; font-size: 18px; }
   .counter {
     position: fixed; bottom: 30px; left: 28px; z-index: 50;
     font: 600 14px/1 var(--font); color: var(--muted);
@@ -336,9 +337,79 @@
     transition: transform 1.5s cubic-bezier(.5,0,.4,1), opacity 1.5s ease;
   }
 
+  /* ---- Mobile / small screens ---- */
   @media (max-width: 700px) {
-    h1 { font-size: 2rem; } h2 { font-size: 1.5rem; }
-    .slide p, .slide li { font-size: 1.1rem; }
+    /* Let long slides scroll instead of being clipped by the centered layout */
+    .slide {
+      justify-content: flex-start;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 56px 18px 76px;
+    }
+    .slide.header { justify-content: center; }
+
+    h1 { font-size: 2rem; } h2 { font-size: 1.55rem; } h3 { font-size: 1.1rem; }
+    .slide p, .slide li { font-size: 1.05rem; line-height: 1.45; }
+    .slide ul, .slide ol { padding-left: 1.1em; }
+    .lead { font-size: 1.2rem; }
+
+    /* tables: smaller + horizontally scrollable if still too wide */
+    .slide-inner { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { font-size: .82rem; }
+    th, td { padding: .4em .5em; }
+
+    /* images: fill the screen height; wide images overflow and scroll sideways */
+    .slide img.full, .slide img.tall {
+      height: 80vh; width: auto; max-width: none; max-height: none;
+      margin: 0;
+    }
+
+    .slide.header .logo { height: 46px; top: 16px; right: 16px; }
+
+    /* chrome */
+    .nav-btn { width: 40px; height: 40px; font-size: 19px; bottom: 14px; }
+    #prev { right: 64px; } #next { right: 14px; } #fs { right: 114px; font-size: 16px; }
+    .counter { bottom: 20px; left: 14px; font-size: 12px; padding: 4px 8px; }
+    .hint { display: none; }
+
+    /* interactive demos */
+    .td-context { font-size: 1.15rem; }
+    .td-model { min-width: 0; padding: .55em 1em; }
+    .td-model-title { font-size: 1.4rem; }
+    .td-cand { min-width: 78px; font-size: .95rem; }
+    .vm-eq { font-size: 1.4rem; gap: .35em; }
+    .emb-plot { max-height: 38vh; }
+    .tp-head { flex-direction: column; gap: .35em; }
+    .tp-prompt { font-size: 1.2rem; }
+    .tp-bar .lbl { width: 84px; font-size: .95rem; }
+    .tp-bar .pct { width: 42px; font-size: .9rem; }
+    /* context window: wrap to rows instead of clipping off-screen */
+    .cw-window { flex-wrap: wrap; overflow: visible; min-height: auto; justify-content: center; }
+    .cw-tok { font-size: .95rem; }
+    .kv-cell .kv span { width: 20px; height: 24px; line-height: 24px; font-size: .62rem; }
+    .dc-logos { gap: 1.1em; }
+    .dc-logo img { width: 42px; height: 42px; }
+    .dc-grid { grid-template-columns: repeat(16, 1fr); }
+    .dc-stats { gap: 1.2em; flex-wrap: wrap; }
+    .dc-stat .num { font-size: 1.3rem; }
+    .sb-letter { font-size: 1.5rem; }
+    .ap-box { font-size: .95rem; flex-wrap: wrap; gap: .5em; }
+    .ap-tag { flex-basis: auto; }
+    .ap-controls { flex-direction: column; gap: .5em; align-items: center; }
+  }
+
+  /* Short / landscape phones: scroll instead of clip even when wide */
+  @media (max-height: 500px) {
+    .slide { justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-top: 40px; padding-bottom: 70px; }
+    .slide.header { justify-content: center; }
+    .hint { display: none; }
+    .nav-btn { width: 38px; height: 38px; font-size: 18px; bottom: 12px; }
+    #prev { right: 60px; } #next { right: 14px; } #fs { right: 106px; font-size: 15px; }
+    .counter { bottom: 16px; left: 14px; }
+    .slide-inner { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .slide img.full, .slide img.tall {
+      height: 72vh; width: auto; max-width: none; max-height: none; margin: 0;
+    }
   }
 </style>
 </head>
@@ -872,6 +943,7 @@
 
 <!-- ============ CHROME ============ -->
 <div class="counter" id="counter">1 / 1</div>
+<button class="nav-btn" id="fs" aria-label="Toggle fullscreen" title="Fullscreen (F)">&#9974;</button>
 <button class="nav-btn" id="prev" aria-label="Previous slide">&#8249;</button>
 <button class="nav-btn" id="next" aria-label="Next slide">&#8250;</button>
 <div class="hint">&larr; &rarr; to navigate &middot; F fullscreen</div>
@@ -906,16 +978,31 @@
   nextBtn.addEventListener('click', next);
   prevBtn.addEventListener('click', prev);
 
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      (document.documentElement.requestFullscreen || function () {}).call(document.documentElement);
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
+  var fsBtn = document.getElementById('fs');
+  if (fsBtn) {
+    fsBtn.addEventListener('click', toggleFullscreen);
+    document.addEventListener('fullscreenchange', function () {
+      // swap icon: "four corners" -> "exit" when fullscreen
+      fsBtn.innerHTML = document.fullscreenElement ? '&#10005;' : '&#9974;';
+      fsBtn.setAttribute('aria-label', document.fullscreenElement ? 'Exit fullscreen' : 'Toggle fullscreen');
+    });
+  }
+
   document.addEventListener('keydown', function (e) {
     switch (e.key) {
       case 'ArrowRight': case 'PageDown': case ' ': next(); e.preventDefault(); break;
       case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
       case 'Home': go(0); break;
       case 'End': go(total - 1); break;
-      case 'f': case 'F':
-        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-        else document.exitFullscreen();
-        break;
+      case 'f': case 'F': toggleFullscreen(); break;
     }
   });
 
