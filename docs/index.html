@@ -748,9 +748,9 @@
       <div class="tp-head">
         <span>0 &middot; deterministic</span>
         <input type="range" id="tpSlider" min="0" max="100" value="40" />
-        <span>creative &middot; random</span>
+        <span>1 &middot; creative</span>
       </div>
-      <div class="tp-val" id="tpVal">Temperature: 0.86</div>
+      <div class="tp-val" id="tpVal">Temperature: 0.40</div>
       <div class="tp-prompt">"Kahvaltıda ___ yedim"</div>
       <div class="tp-bars" id="tpBars"></div>
     </div>
@@ -1378,13 +1378,14 @@
     return { row: row, fill: row.querySelector('.fillb'), pct: row.querySelector('.pct') };
   });
 
-  function temp() { return 0.1 + (slider.value / 100) * 1.9; } // 0.1 .. 2.0
+  function temp() { return slider.value / 100; } // 0.00 .. 1.00
 
   function update() {
     var T = temp();
-    var ex = LOGITS.map(function (l) { return Math.exp(l / T); });
+    var Tm = Math.max(T, 0.01); // avoid divide-by-zero in the softmax
+    var ex = LOGITS.map(function (l) { return Math.exp(l / Tm); });
     var sum = ex.reduce(function (a, b) { return a + b; }, 0);
-    var label = T < 0.5 ? ' (deterministic)' : (T > 1.3 ? ' (creative / random)' : '');
+    var label = T < 0.3 ? ' (deterministic)' : (T > 0.7 ? ' (creative / random)' : '');
     val.textContent = 'Temperature: ' + T.toFixed(2) + label;
     rows.forEach(function (r, i) {
       var p = ex[i] / sum;
